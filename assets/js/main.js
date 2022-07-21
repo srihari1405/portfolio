@@ -1,561 +1,517 @@
 (function ($) {
-    "use strict";
 
-    //--------------------------------------------------
-    // Preloader
-    //--------------------------------------------------
-    $(window).on('load', function () {
-        $('.preloader').fadeOut('slow');
-        RevealLoad();
-        startAnim();
-        $('.preloader').removeClass()
-    })
+  "use strict";
 
+  /*
+  |--------------------------------------------------------------------------
+  | Template Name: Davix
+  | Author: Laralink
+  | Version: 1.0.0
+  |--------------------------------------------------------------------------
+  |--------------------------------------------------------------------------
+  | TABLE OF CONTENTS:
+  |--------------------------------------------------------------------------
+  |
+  | 1. Placeholder
+  | 2. Dynamic Background
+  | 3. Menu
+  | 4. Sticky Header
+  | 5. One Page Navigation
+  | 6. Progress Bar
+  | 7. Ajax Contact Form And Appointment
+  | 8. Light Gallery
+  | 9. Social Button Hover
+  | 10. Slick Slider
+  | 11. particles
+  | 12. Ripple
+  | 13. Parallax Effect
+  */
 
-    //--------------------------------------------------
-    // Animation Start
-    //--------------------------------------------------
-    function startAnim() {
-        TweenMax.from('.logo', 1, {
-            y: '100',
-            autoAlpha: 0,
-            delay: '.3',
-            ease: Power4.easeInOut,
-        })
-        TweenMax.from('.toggle-btn', 1, {
-            y: '100',
-            delay: '.3',
-            autoAlpha: 0,
-            ease: Power4.easeInOut,
-        })
-        TweenMax.from('.bg-right', 1, {
-            x: 100,
-            ease: Power4.easeInOut,
-            delay: '.3',
-        })
-        TweenMax.from('.bg-about', 1, {
-            x: 100,
-            ease: Power4.easeInOut,
-            delay: '.3',
-        })
+  /*--------------------------------------------------------------
+    Scripts initialization
+  --------------------------------------------------------------*/
+  $.exists = function (selector) {
+    return $(selector).length > 0;
+  };
 
-        TweenMax.from('.scr', 1, {
-            y: '100',
-            ease: Power4.easeInOut,
-            autoAlpha: 0,
-        })
+  $(window).on("load", function () {
+    $(window).trigger("scroll");
+    $(window).trigger("resize");
+    preloaderSetup();
+  });
 
-        TweenMax.from('.scrolls', 1, {
-            y: '100',
-            delay: 1,
-            ease: Power4.easeInOut,
-            autoAlpha: 0,
-        })
+  $(document).on("ready", function () {
+    $(window).trigger("resize");
+    dynamicBackground();
+    formValidation();
+    progressBarInit();
+    stickyHeader();
+    onePageNavigation();
+    mainMenu();
+    lightGallery();
+    socialBtnHover();
+    slickInit();
+    particles();
+    parallaxEffect();
+    rippleInit();
+    new WOW().init();
 
+  });
 
-        TweenMax.to('.menu', 0, {
-            autoAlpha: 0,
-        })
+  $(window).on("scroll", function () {
+    stickyHeader();
+    parallaxEffect();
+  });
 
+  /*--------------------------------------------------------------
+    1. Placeholder
+  --------------------------------------------------------------*/
+  function preloaderSetup() {
+    $(".st-perloader").fadeOut();
+    $("st-perloader-in").delay(150).fadeOut("slow");
+  }
 
-    }
-
-
-    //--------------------------------------------------
-    // Parralax
-    //--------------------------------------------------
-    var headermove = $('#headmove').get(0);
-    var parallaxInstance = new Parallax(headermove, {
-        relativeInput: true,
-        scalarX: 14,
-        hoverOnly: false,
+  /*--------------------------------------------------------------
+    2. Dynamic Background
+  --------------------------------------------------------------*/
+  function dynamicBackground() {
+    // Background images
+    $('.st-dynamic-bg').each(function () {
+      var src = $(this).attr('data-src');
+      $(this).css({
+        'background-image': 'url(' + src + ')'
+      });
     });
+  }
 
-
-    //--------------------------------------------------
-    // Web Load
-    //--------------------------------------------------
-    function RevealLoad() {
-        var loadTL = new TimelineMax();
-        var block1 = $('.block-1');
-        var block2 = $('.block-2');
-        var logo = $('.logo-load');
-
-        loadTL
-            .to(block1, 0.5, {
-                height: '0',
-                delay: '0'
-            })
-            .to(block2, 0.5, {
-                height: '0',
-            })
-            .to(logo, 0, {
-                autoAlpha: 0,
-                delay: '-0.4',
-            })
-
-        loadTL.play();
-    }
-
-    function HideLoad() {
-        var loadTL = new TimelineMax();
-        var block1 = $('.block-1');
-        var block2 = $('.block-2');
-        var logo = $('.logo-load');
-
-        loadTL
-            .to(block1, 0.5, {
-                height: '100%',
-                delay: '0'
-            })
-            .to(block2, 0.5, {
-                height: '100%',
-            })
-            .to(logo, 0, {
-                autoAlpha: 1,
-                delay: '-0.5'
-            })
-
-        loadTL.play();
-    }
-
-    $('.load-spiral').on('click', function (e) {
-        e.preventDefault();
-        setTimeout(function (url) {
-            window.location = url
-        }, 1000, this.href);
-        HideLoad();
+  /*--------------------------------------------------------------
+    3. Menu
+  --------------------------------------------------------------*/
+  function mainMenu() {
+    $('.st-nav').append('<span class="st-munu-toggle"><span></span></span>');
+    $('.menu-item-has-children').append('<span class="st-munu-dropdown-toggle"></span>');
+    $('.st-munu-toggle').on('click', function () {
+      $(this).toggleClass("st-toggle-active").siblings('.st-nav-list').slideToggle();;
     });
-
-
-    //--------------------------------------------------
-    // Animation on navbar scrolling background
-    //--------------------------------------------------
-    var wind = $(window);
-
-    wind.on("scroll", function () {
-        var bodyScroll = wind.scrollTop();
-
-        if (bodyScroll > 300) {
-
-            TweenMax.to('.scr', .5, {
-                autoAlpha: 0,
-                y: '100',
-
-            })
-
-            TweenMax.to('.scrolls', .5, {
-                autoAlpha: 0,
-                y: '100',
-
-            })
-
-
-        } else {
-            TweenMax.to('.scr', 1, {
-                autoAlpha: 1,
-                y: '00',
-
-            })
-
-            TweenMax.to('.scrolls', .5, {
-                autoAlpha: 1,
-                y: '0',
-
-            })
-
-        }
+    $('.st-munu-dropdown-toggle').on('click', function () {
+      $(this).toggleClass('active').siblings('ul').slideToggle();
     });
+  }
 
-
-    $('.img-folio').on('mouseenter', function () {
-        TweenMax.to(this, 0.4, {
-            y: '-30',
-        })
-    });
-
-    $('.img-folio').on('mouseleave', function () {
-        TweenMax.to(this, 0.4, {
-            y: '1',
-        })
-    });
-
-
-    luxy.init({
-        wrapper: '#spiral',
-        wrapperSpeed: '0.07',
-    });
-
-    //--------------------------------------------------
-    // Cursor
-    //--------------------------------------------------
-
-    var isMobile = false;
-    if (/Android|webOS|iPhone|iPod|iPad|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        $('html').addClass('touch');
-        isMobile = true;
+  /*--------------------------------------------------------------
+    4. Sticky Header
+  --------------------------------------------------------------*/
+  function stickyHeader() {
+    var scroll = $(window).scrollTop();
+    if (scroll >= 10) {
+      $('.st-sticky-header').addClass('st-sticky-active');
     } else {
-        $('html').addClass('no-touch');
-        isMobile = false;
+      $('.st-sticky-header').removeClass('st-sticky-active');
     }
+  }
 
-    var isMacLike = /(Mac)/i.test(navigator.platform);
+  /*--------------------------------------------------------------
+    5. One Page Navigation
+  --------------------------------------------------------------*/
+  function onePageNavigation() {
+    // Click To Go Top
+    $('.st-smooth-move').on('click', function () {
+      var thisAttr = $(this).attr('href');
+      if ($(thisAttr).length) {
+        var scrollPoint = $(thisAttr).offset().top - 10;
+        $('body,html').animate({
+          scrollTop: scrollPoint
+        }, 800);
+      }
+      return false;
+    });
 
-    var cursor = {
-        delay: 8,
-        _x: 0,
-        _y: 0,
-        endX: (window.innerWidth / 2),
-        endY: (window.innerHeight / 2),
-        cursorVisible: true,
-        cursorEnlarged: false,
-        $cursor: document.querySelector('.cursor'),
-        $cursor1: document.querySelector('.cursor1'),
+    // One Page Active Class
+    var topLimit = 300,
+      ultimateOffset = 200;
 
-        init: function () {
-            $('body').css('cursor', 'none');
+    $('.st-onepage-nav').each(function () {
+      var $this = $(this),
+        $parent = $this.parent(),
+        current = null,
+        $findLinks = $this.find("a");
 
-            // Set up element sizes
-            this.cursorSize = this.$cursor.offsetWidth;
-            this.cursor1Size = this.$cursor1.offsetWidth;
-
-            this.setupEventListeners();
-            this.animateDotOutline();
-            this.cursorDrag();
-            this.cursorExplore();
-            this.cursorZoom();
-            this.cursorNext();
-            this.cursorPrev();
-        },
-
-        setupEventListeners: function () {
-            var self = this;
-
-            // Anchor hovering
-            Array.prototype.slice.call(document.querySelectorAll('  .zoom-cursor, .hover-target')).forEach(function (el) {
-                el.addEventListener('mouseover', function () {
-                    self.cursorEnlarged = true;
-                    self.toggleCursorSize();
-                });
-                el.addEventListener('mouseout', function () {
-                    self.cursorEnlarged = false;
-                    self.toggleCursorSize();
-                });
-            });
-
-            document.addEventListener('mousemove', function (e) {
-                // Show the cursor
-                self.cursorVisible = true;
-                self.toggleCursorVisibility();
-
-                // Position the dot
-                self.endX = e.clientX;
-                self.endY = e.clientY;
-                self.$cursor.style.top = self.endY + 'px';
-                self.$cursor.style.left = self.endX + 'px';
-            });
-
-            // Hide/show cursor
-            document.addEventListener('mouseenter', function (e) {
-                self.cursorVisible = true;
-                self.toggleCursorVisibility();
-                self.$cursor.style.opacity = 1;
-                self.$cursor1.style.opacity = 1;
-            });
-
-            document.addEventListener('mouseleave', function (e) {
-                self.cursorVisible = true;
-                self.toggleCursorVisibility();
-                self.$cursor.style.opacity = 0;
-                self.$cursor1.style.opacity = 0;
-            });
-        },
-
-        animateDotOutline: function () {
-            var self = this;
-
-            self._x += (self.endX - self._x) / self.delay;
-            self._y += (self.endY - self._y) / self.delay;
-            self.$cursor1.style.top = self._y + 'px';
-            self.$cursor1.style.left = self._x + 'px';
-
-            requestAnimationFrame(this.animateDotOutline.bind(self));
-        },
-
-        toggleCursorSize: function () {
-            var self = this;
-
-            if (self.cursorEnlarged) {
-                self.$cursor1.classList.add('expand');
-            } else {
-                self.$cursor1.classList.remove('expand');
-            }
-        },
-
-        toggleCursorVisibility: function () {
-            var self = this;
-
-            if (self.cursorVisible) {
-                self.$cursor.style.opacity = 1;
-                self.$cursor1.style.opacity = 1;
-            } else {
-                self.$cursor.style.opacity = 0;
-                self.$cursor1.style.opacity = 0;
-            }
-        },
-
-        cursorDrag: function () {
-            var self = this;
-            $('.cursorDrag').on('mouseenter', function () {
-                self.$cursor1.classList.add('drag', 'expand');
-            });
-            $('.cursorDrag').on('mouseleave', function () {
-                self.$cursor1.classList.remove('drag', 'expand');
-            });
-        },
-
-        cursorExplore: function () {
-            var self = this;
-            $('.cursorExplore').on('mouseenter', function () {
-                self.$cursor1.classList.add('explore');
-            });
-            $('.cursorExplore').on('mouseleave', function () {
-                self.$cursor1.classList.remove('explore');
-            });
-        },
-
-        cursorZoom: function () {
-            var self = this;
-            $('.cursorZoom').on('mouseenter', function () {
-                self.$cursor1.classList.add('zoom');
-            });
-            $('.cursorZoom').on('mouseleave', function () {
-                self.$cursor1.classList.remove('zoom');
-            });
-        },
-
-        cursorNext: function () {
-            var self = this;
-            $('.cursorNext').on('mouseenter', function () {
-                self.$cursor1.classList.add('next');
-            });
-            $('.cursorNext').on('mouseleave', function () {
-                self.$cursor1.classList.remove('next');
-            });
-        },
-
-        cursorPrev: function () {
-            var self = this;
-            $('.cursorPrev').on('mouseenter', function () {
-                self.$cursor1.classList.add('prev');
-            });
-            $('.cursorPrev').on('mouseleave', function () {
-                self.$cursor1.classList.remove('prev');
-            });
+      function getHeader(top) {
+        var last = $findLinks.first();
+        if (top < topLimit) {
+          return last;
         }
-    }
+        for (var i = 0; i < $findLinks.length; i++) {
+          var $link = $findLinks.eq(i),
+            href = $link.attr("href");
 
-    if (!isMobile) {
-        cursor.init(); //Init custom cursor
-    }
-
-
-
-
-    //--------------------------------------------------
-    // Work detail slider
-    //--------------------------------------------------
-    workSlider();
-
-    function workSlider() {
-        var workSlide = $('.work-slider .owl-carousel');
-        workSlide.owlCarousel({
-            loop: true,
-            margin: 30,
-            mouseDrag: false,
-            autoplay: false,
-            center: false,
-            dots: false,
-            dragEndSpeed: 700,
-            smartSpeed: 2000,
-            responsiveClass: true,
-            autoplayHoverPause: true,
-            autoplayTimeout: 9000,
-            responsive: {
-                0: {
-                    items: 1,
-                    margin: 0,
-                },
-                600: {
-                    items: 1,
-                    margin: 0,
-                },
-                1000: {
-                    items: 1,
-                    margin: 0,
-                }
+          if (href.charAt(0) === "#" && href.length > 1) {
+            var $anchor = $(href).first();
+            if ($anchor.length > 0) {
+              var offset = $anchor.offset();
+              if (top < offset.top - ultimateOffset) {
+                return last;
+              }
+              last = $link;
             }
-        });
+          }
+        }
+        return last;
+      }
 
-        $('.right-over-next').on("click", function () {
-            workSlide.trigger('next.owl.carousel');
-        })
-        $('.right-over-prev').on("click", function () {
-            workSlide.trigger('prev.owl.carousel');
-        })
-    }
+      $(window).on("scroll", function () {
+        var top = window.scrollY,
+          height = $this.outerHeight(),
+          max_bottom = $parent.offset().top + $parent.outerHeight(),
+          bottom = top + height + ultimateOffset;
 
-    //--------------------------------------------------
-    // Toggle Menu
-    //--------------------------------------------------
-    var t1 = new TimelineMax({
-        paused: true
+        var $current = getHeader(top);
+
+        if (current !== $current) {
+          $this.find(".active").removeClass("active");
+          $current.addClass("active");
+          current = $current;
+        }
+      });
     });
-    t1.to(".one", 0.8, {
-        y: 9,
-        autoAlpha: 0,
-        ease: Expo.easeInOut
+  }
+
+
+  /*--------------------------------------------------------------
+    6. Progress Bar
+  --------------------------------------------------------------*/
+  function progressBarInit() {
+    $('.st-progressbar').each(function () {
+      var progressPercentage = $(this).data('progress') + "%";
+      $(this).find('.st-progressbar-in').css('width', progressPercentage);
     });
-    t1.to(".two", 0.8, {
-        ease: Expo.easeInOut,
-        delay: -1
-    });
-    t1.to(".tre", 0.8, {
-        y: -9,
-        autoAlpha: 0,
-        ease: Expo.easeInOut,
-        delay: -1
-    });
-    t1.to(".over-all", 1, {
-        autoAlpha: 1,
-        ease: Expo.easeOut,
-    })
-    t1.to(".bg-nav", 1, {
-        autoAlpha: 1,
-        ease: Power4.easeOut,
-        delay: -1
-    })
+  }
 
 
-    t1.to(".menu", 1, {
-        autoAlpha: 1,
-        ease: Expo.easeOut,
-        delay: -1
-    })
+  /*--------------------------------------------------------------
+    7. Ajax Contact Form And Appointment
+  --------------------------------------------------------------*/
+  // Contact Form
+  function formValidation() {
+    if ($.exists('#contact-form #submit')) {
+      $('#st-alert').hide();
+      $('#contact-form #submit').on('click', function () {
+        var name = $('#name').val();
+        var subject = $('#subject').val();
+        var phone = $('#phone').val();
+        var email = $('#email').val();
+        var msg = $('#msg').val();
+        var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 
-    t1.staggerFrom(".menu ul li", 3, {
-        y: 50,
-        opacity: 0,
-        ease: Power4.easeInOut,
-    }, '0.1', '-0.01');
+        if (!regex.test(email)) {
+          $('#st-alert').fadeIn().html('<div class="alert alert-danger"><strong>Warning!</strong> Please Enter Valid Email.</div>');
+          return false;
+        }
 
+        name = $.trim(name);
+        subject = $.trim(subject);
+        phone = $.trim(phone);
+        email = $.trim(email);
+        msg = $.trim(msg);
 
-    t1.reverse();
+        if (name != '' && email != '' && msg != '') {
+          var values = "name=" + name +
+            "&subject=" + subject +
+            "&phone=" + phone +
+            "&email=" + email +
+            "&msg=" + msg;
+          $.ajax({
+            type: "POST",
+            url: "assets/php/mail.php",
+            data: values,
+            success: function () {
+              $('#name').val('');
+              $('#subject').val('');
+              $('#phone').val('');
+              $('#email').val('');
+              $('#msg').val('');
 
-    $('.toggle-btn').on("click", function () {
-        t1.reversed(!t1.reversed()); //toggles the orientation
-    })
-  
-
-    //--------------------------------------------------
-    // Magnetic
-    //--------------------------------------------------
-
-    $(document).on('mousemove', function (e) {
-        $('.magnetic').each(function () {
-            if (!isMobile) {
-                magnetic(this, e); //Init effect magnetic 
+              $('#st-alert').fadeIn().html('<div class="alert alert-success"><strong>Success!</strong> Email has been sent successfully.</div>');
+              setTimeout(function () {
+                $('#st-alert').fadeOut('slow');
+              }, 4000);
             }
-        });
-    });
-
-    function magnetic(el, e) {
-        var mX = e.pageX,
-            mY = e.pageY;
-        const obj = $(el);
-
-        const customDist = 20 * obj.data('dist') || 80,
-            centerX = obj.offset().left + obj.width() / 2,
-            centerY = obj.offset().top + obj.height() / 2;
-
-        var deltaX = Math.floor((centerX - mX)) * -.4,
-            deltaY = Math.floor((centerY - mY)) * -.4;
-
-        var distance = calcDistance(obj, mX, mY);
-
-        if (distance < customDist) {
-            TweenMax.to(obj, .4, {
-                y: deltaY,
-                x: deltaX
-            });
+          });
         } else {
-            TweenMax.to(obj, .4, {
-                y: 0,
-                x: 0
-            });
+          $('#st-alert').fadeIn().html('<div class="alert alert-danger"><strong>Warning!</strong> All fields are required.</div>');
         }
+        return false;
+      });
     }
+  }
 
-    function calcDistance(elem, mouseX, mouseY) {
-        return Math.floor(Math.sqrt(Math.pow(mouseX - (elem.offset().left + (elem.width() / 2)), 2) + Math.pow(mouseY - (elem.offset().top + (elem.height() / 2)), 2)));
-    }
 
-    //--------------------------------------------------
-    // Zoom Image
-    //--------------------------------------------------
+  /*--------------------------------------------------------------
+    8. Light Gallery
+  --------------------------------------------------------------*/
+  function lightGallery() {
+    $('.st-lightgallery').each(function () {
+      $(this).lightGallery({
+        selector: '.st-lightbox-item',
+        subHtmlSelectorRelative: false,
+        thumbnail: false,
+        mousewheel: true
+      });
+    });
+  }
 
-    mediumZoom(document.querySelectorAll('.cover'), {
-        background: '#000',
+  /*--------------------------------------------------------------
+    9. Social Button Hover
+  --------------------------------------------------------------*/
+  function socialBtnHover() {
+    $(".st-social-btn").hover(
+      function () {
+        $(this).addClass("active").siblings().removeClass('active');
+      }
+    )
+  }
+
+  /*--------------------------------------------------------------
+    10. Slick Slider
+  --------------------------------------------------------------*/ 
+  function slickInit() {
+    $('.st-slider').each(function () {
+      // Slick Variable
+      var $ts = $(this).find('.slick-container');
+      var $slickActive = $(this).find('.slick-wrapper');
+      var $sliderNumber = $(this).siblings('.slider-number');
+
+      // Auto Play
+      var autoPlayVar = parseInt($ts.attr('data-autoplay'), 10);
+      // Auto Play Time Out
+      var autoplaySpdVar = 3000;
+      if (autoPlayVar > 1) {
+        autoplaySpdVar = autoPlayVar;
+        autoPlayVar = 1;
+      }
+      // Slide Change Speed
+      var speedVar = parseInt($ts.attr('data-speed'), 10);
+      // Slider Loop
+      var loopVar = Boolean(parseInt($ts.attr('data-loop'), 10));
+      // Slider Center
+      var centerVar = Boolean(parseInt($ts.attr('data-center'), 10));
+      // Pagination
+      var paginaiton = $(this).children().hasClass('pagination');
+      // Slide Per View
+      var slidesPerView = $ts.attr('data-slides-per-view');
+      if (slidesPerView == 1) {
+        slidesPerView = 1;
+      }
+      if (slidesPerView == 'responsive') {
+        var slidesPerView = parseInt($ts.attr('data-add-slides'), 10);
+        var lgPoint = parseInt($ts.attr('data-lg-slides'), 10);
+        var mdPoint = parseInt($ts.attr('data-md-slides'), 10);
+        var smPoint = parseInt($ts.attr('data-sm-slides'), 10);
+        var xsPoing = parseInt($ts.attr('data-xs-slides'), 10);
+      }
+      // Fade Slider
+      var fadeVar = parseInt($($ts).attr('data-fade-slide'));
+      (fadeVar === 1) ? (fadeVar = true) : (fadeVar = false);
+
+      // Slick Active Code
+      $slickActive.slick({
+        infinite: true,
+        autoplay: autoPlayVar,
+        dots: paginaiton,
+        centerPadding: '0',
+        speed: speedVar,
+        infinite: loopVar,
+        autoplaySpeed: autoplaySpdVar,
+        centerMode: centerVar,
+        fade: fadeVar,
+        prevArrow: $(this).find('.slick-arrow-left'),
+        nextArrow: $(this).find('.slick-arrow-right'),
+        appendDots: $(this).find('.pagination'),
+        slidesToShow: slidesPerView,
+        responsive: [{
+          breakpoint: 1600,
+          settings: {
+            slidesToShow: lgPoint
+          }
+        },
+        {
+          breakpoint: 1200,
+          settings: {
+            slidesToShow: mdPoint
+          }
+        },
+        {
+          breakpoint: 992,
+          settings: {
+            slidesToShow: smPoint
+          }
+        },
+        {
+          breakpoint: 768,
+          settings: {
+            slidesToShow: xsPoing
+          }
+        }
+        ]
+      });
     })
-
-    var workSlide = new Swiper('.swiper-container', {
-
-        slidesPerView: 1,
-        pagination: {
-            el: '.swiper-pagination',
-            type: 'progressbar',
+  }
+  /*--------------------------------------------------------------
+    11. particles
+  --------------------------------------------------------------*/ 
+  function particles() {
+    if ($.exists('#particles-js')) {
+      particlesJS("particles-js", {
+        "particles": {
+          "number": {
+            "value": 355,
+            "density": {
+              "enable": true,
+              "value_area": 789.1476416322727
+            }
           },
-        loop: false,
-        centeredSlides: false,
-        speed: 900,
-        spaceBetween: 0,
-        mousewheel: true,
+          "color": {
+            "value": "#ffffff"
+          },
+          "shape": {
+            "type": "circle",
+            "stroke": {
+              "width": 0,
+              "color": "#000000"
+            },
+            "polygon": {
+              "nb_sides": 5
+            },
+            "image": {
+              "src": "img/github.svg",
+              "width": 100,
+              "height": 100
+            }
+          },
+          "opacity": {
+            "value": 0.48927153781200905,
+            "random": false,
+            "anim": {
+              "enable": true,
+              "speed": 0.6,
+              "opacity_min": 0,
+              "sync": false
+            }
+          },
+          "size": {
+            "value": 2,
+            "random": true,
+            "anim": {
+              "enable": true,
+              "speed": 5,
+              "size_min": 0,
+              "sync": false
+            }
+          },
+          "line_linked": {
+            "enable": false,
+            "distance": 150,
+            "color": "#ffffff",
+            "opacity": 0.4,
+            "width": 1
+          },
+          "move": {
+            "enable": true,
+            "speed": 0.2,
+            "direction": "none",
+            "random": true,
+            "straight": false,
+            "out_mode": "out",
+            "bounce": false,
+            "attract": {
+              "enable": false,
+              "rotateX": 600,
+              "rotateY": 1200
+            }
+          }
+        },
+        "interactivity": {
+          "detect_on": "canvas",
+          "events": {
+            "onhover": {
+              "enable": true,
+              "mode": "bubble"
+            },
+            "onclick": {
+              "enable": true,
+              "mode": "push"
+            },
+            "resize": true
+          },
+          "modes": {
+            "grab": {
+              "distance": 400,
+              "line_linked": {
+                "opacity": 1
+              }
+            },
+            "bubble": {
+              "distance": 83.91608391608392,
+              "size": 1,
+              "duration": 3,
+              "opacity": 1,
+              "speed": 3
+            },
+            "repulse": {
+              "distance": 200,
+              "duration": 0.4
+            },
+            "push": {
+              "particles_nb": 4
+            },
+            "remove": {
+              "particles_nb": 2
+            }
+          }
+        },
+        "retina_detect": true
+      });
+    }
+  }
+  /*--------------------------------------------------------------
+    12. Ripple
+  --------------------------------------------------------------*/
+  function rippleInit() {
+    if ($.exists('.st-ripple-version')) {
+      $('.st-ripple-version').each(function () {
+        $('.st-ripple-version').ripples({
+          resolution: 512,
+          dropRadius: 20,
+          perturbance: 0.04,
+        });
+      });
+    }
+  }
 
+  /*--------------------------------------------------------------
+    13. Parallax Effect
+  --------------------------------------------------------------*/
+  function parallaxEffect() {
+    $('.st-parallax').each(function() {
+      var windowScroll = $(document).scrollTop(),
+        windowHeight = $(window).height(),
+        barOffset = $(this).offset().top,
+        barHeight = $(this).height(),
+        barScrollAtZero = windowScroll - barOffset + windowHeight,
+        barHeightWindowHeight = windowScroll + windowHeight,
+        barScrollUp = barOffset <= (windowScroll + windowHeight),
+        barSctollDown = barOffset + barHeight >= windowScroll;
+
+      if (barSctollDown && barScrollUp) {
+        var calculadedHeight = barHeightWindowHeight - barOffset;
+        var largeEffectPixel = ((calculadedHeight / 5));
+        var mediumEffectPixel = ((calculadedHeight / 20));
+        var miniEffectPixel = ((calculadedHeight / 10));
+
+        $(this).find('.st-to-left').css('transform', `translateX(-${miniEffectPixel}px)`);
+        $(this).find('.st-to-right').css('transform', `translateX(${miniEffectPixel}px)`);
+        $(this).css('background-position', `center -${largeEffectPixel}px`);
+      }
     });
-
-    workSlide.on('slideChange', function () {
-        TweenMax.to('.text-1', 0.3, {
-            y: '80',
-         
-        })
-        TweenMax.to('.text-2', 0.3, {
-            y: '80',
-         
-        })
-
-      
-        
-    });
-
-    workSlide.on('slideChangeTransitionEnd', function () {
-        TweenMax.to('.text-1', 0.3, {
-            y: '0',
-         
-        })
-        TweenMax.to('.text-2', 0.3, {
-            y: '0',
-         
-        })
-   
-    });
-
-
-
-    var toggler = $('.menu__toggler');
-    var menu = $('.menus');
-    toggler.on("click", function () {
-        toggler.toggleClass('activez');
-        menu.toggleClass('activez');
-    });
-
-})(jQuery);
+  }
+})(jQuery); // End of use strict
